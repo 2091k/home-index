@@ -154,6 +154,85 @@
             }
         }
     </style>
+	<style>
+    /* 新增移动端适配样式 */
+    @media (max-width: 480px) {
+        header {
+            padding: 1.5rem 0;
+        }
+        
+        header h1 {
+            font-size: 2rem !important;
+            margin-bottom: 0.3rem;
+        }
+
+        #hitokoto {
+            font-size: 1.2vh !important;
+            padding: 0 10px;
+        }
+
+        .container {
+            padding: 1rem 10px 70px;
+        }
+
+        .nav-item {
+            max-width: 100%;
+            padding: 1rem;
+            border-radius: 1rem;
+            margin: 0.5rem 0;
+        }
+
+        h2 {
+            font-size: 1.2rem !important;
+        }
+
+        .nav-item p {
+            font-size: 0.9rem;
+        }
+
+        footer {
+            padding: 1rem;
+            position: fixed;
+            bottom: 0;
+        }
+
+        footer p {
+            font-size: 0.8rem;
+        }
+
+        .modal-content {
+            width: 95%;
+            max-width: 340px;
+            padding: 1.5rem;
+        }
+
+        .site-link {
+            padding: 0.8rem;
+            font-size: 0.9rem;
+        }
+    }
+
+    /* 优化原有移动端样式 */
+    @media (max-width: 768px) {
+        .nav-grid {
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+        }
+        
+        .nav-item {
+            transform: scale(0.95);
+            transition: none;
+        }
+        
+        .nav-item:hover {
+            transform: scale(0.95);
+        }
+        
+        body {
+            padding-bottom: 60px;
+        }
+    }
+</style>
 </head>
 <body>
     <header>
