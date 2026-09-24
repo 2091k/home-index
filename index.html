@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>爱喝胡辣汤资源导航中心 - 2091K</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background: #0a0e17;
+            color: #e2e8f0;
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 80px;
+        }
+
+        /* 流动线条画布 */
+        #flow-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        header {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 2rem 0;
+            background:
+                radial-gradient(ellipse 80% 90% at 50% 0%, rgba(56,189,248,0.10), transparent 65%),
+                radial-gradient(ellipse 60% 70% at 25% 10%, rgba(167,139,250,0.08), transparent 55%),
+                radial-gradient(ellipse 60% 70% at 75% 10%, rgba(52,211,153,0.08), transparent 55%);
+            border-bottom: 1px solid rgba(56,189,248,0.15);
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 20px 80px;
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            place-items: center;
+        }
+
+        .nav-item {
+            width: 100%;
+            max-width: 320px;
+            background: #111827;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(56,189,248,0.15);
+            text-decoration: none;
+            display: block;
+            color: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #38bdf8, #a78bfa, transparent);
+            opacity: 0;
+            transition: opacity .3s;
+        }
+
+        .nav-item:hover {
+            background: #1a2332;
+            transform: translateY(-5px);
+            border-color: rgba(56,189,248,0.4);
+            box-shadow: 0 10px 28px rgba(56,189,248,0.12);
+        }
+
+        .nav-item:hover::before { opacity: 1; }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(120deg, #38bdf8 0%, #a78bfa 60%, #34d399 100%);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        /* 弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10,14,23,0.78);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: rgba(17, 24, 39, 0.96);
+            padding: 2rem;
+            border-radius: 1.5rem;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+            border: 1px solid rgba(56,189,248,0.15);
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.3s ease-out;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .modal-content h3 {
+            color: #f8fafc;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .close {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #94a3b8;
+            transition: color .2s;
+        }
+
+        .close:hover { color: #38bdf8; }
+
+        .site-link {
+            display: block;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(56,189,248,0.15);
+            border-radius: 0.8rem;
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .site-link:hover {
+            background: rgba(56,189,248,0.08);
+            border-color: rgba(56,189,248,0.4);
+            transform: translateX(5px);
+            color: #f8fafc;
+        }
+
+        footer {
+            position: fixed;
+            z-index: 99;
+            text-align: center;
+            padding: 2rem;
+            background: radial-gradient(ellipse 60% 120% at 50% 100%, rgba(167,139,250,0.08), rgba(10,14,23,0.85));
+            border-top: 1px solid rgba(56,189,248,0.15);
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        @media (max-width: 768px) {
+            .nav-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-item {
+                padding: 1.2rem;
+            }
+            
+            h2 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+	<style>
+    /* 新增移动端适配样式 */
+    @media (max-width: 480px) {
+        header {
+            padding: 1.5rem 0;
+        }
+        
+        header h1 {
+            font-size: 2rem !important;
+            margin-bottom: 0.3rem;
+        }
+
+        #hitokoto {
+            font-size: 2vh !important;
+            padding: 0 10px;
+        }
+
+        .container {
+            padding: 1rem 10px 70px;
+        }
+
+        .nav-item {
+            max-width: 100%;
+            padding: 1rem;
+            border-radius: 1rem;
+            margin: 0.5rem 0;
+        }
+
+        h2 {
+            font-size: 1.2rem !important;
+        }
+
+        .nav-item p {
+            font-size: 0.9rem;
+        }
+
+        footer {
+            padding: 1rem;
+            position: fixed;
+            bottom: 0;
+            background: #0a0e17e6;
+        }
+
+        footer p {
+            font-size: 0.8rem;
+        }
+
+        .modal-content {
+            width: 95%;
+            max-width: 340px;
+            padding: 1.5rem;
+        }
+
+        .site-link {
+            padding: 0.8rem;
+            font-size: 0.9rem;
+        }
+    }
+
+    /* 优化原有移动端样式 */
+    @media (max-width: 768px) {
+        .nav-grid {
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+        }
+        
+        .nav-item {
+            transform: scale(0.95);
+            transition: none;
+        }
+        
+        .nav-item:hover {
+            transform: scale(0.95);
+        }
+        
+        body {
+            padding-bottom: 60px;
+        }
+    }
+</style>
+</head>
+<body>
+    <canvas id="flow-canvas"></canvas>
+
+    <header>
+        <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">爱喝胡辣汤</h1>
+		<p style="font-size:2vh; color: #94a3b8;" id="hitokoto">思考中...</p>
+        <script src="https://v1.hitokoto.cn/?encode=js&select=%23hitokoto" defer></script>
+    </header>
+
+    <div class="container">
+        <div class="nav-grid">
+            <a class="nav-item" href="https://blog.2091k.cn/" target="_blank">
+                <h2>📝 博客</h2>
+                <p style="color: #94a3b8;">知识分享与技术交流</p>
+            </a>
+
+            <a class="nav-item" href="http://vqq.521156.xyz/" target="_blank">
+                <h2>🎬 我的影院</h2>
+                <p style="color: #94a3b8;">高清影视资源库</p>
+            </a>
+
+            <div class="nav-item" onclick="openModal()">
+                <h2>🖼️ 图床</h2>
+                <p style="color: #94a3b8;">选择图片托管服务</p>
+            </div>
+
+            <a class="nav-item" href="http://cloud.2091k.cn/alist" target="_blank">
+                <h2>☁️ ALIST</h2>
+                <p style="color: #94a3b8;">多网盘聚合管理</p>
+            </a>
+
+            <a class="nav-item" href="https://aipan.2091k.cn/" target="_blank">
+                <h2>💾 爱盘</h2>
+                <p style="color: #94a3b8;">网络资源分享</p>
+            </a>
+
+            <a class="nav-item" href="https://home.2091k.cn/dh/" target="_blank">
+                <h2>🔍 更多</h2>
+                <p style="color: #94a3b8;">发现更多资源</p>
+            </a>
+        </div>
+    </div>
+
+    <!-- 图床弹窗 -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h3>选择一个图床</h3>
+            <a href="https://tgimges.521156.xyz/" class="site-link" target="_blank">TG图床</a>
+            <a href="http://imges.521156.xyz/" class="site-link" target="_blank">GitHub图床</a>
+        </div>
+    </div>
+
+    <footer>
+        <p style="color: #64748b;">© 2025 爱喝胡辣汤-资源导航中心 · 高效工作 精致生活</p>
+    </footer>
+
+    <script>
+        // ===== 流动线条画布 =====
+        (function () {
+            var canvas = document.getElementById('flow-canvas');
+            var ctx = canvas.getContext('2d');
+            var W, H, dpr;
+
+            function resize() {
+                dpr = Math.min(window.devicePixelRatio || 1, 2);
+                W = window.innerWidth;
+                H = window.innerHeight;
+                canvas.width = W * dpr;
+                canvas.height = H * dpr;
+                canvas.style.width = W + 'px';
+                canvas.style.height = H + 'px';
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            function makeLine() {
+                var side = Math.random();
+                var start;
+                if (side < 0.35) {
+                    start = { x: -20, y: Math.random() * H };
+                } else if (side < 0.7) {
+                    start = { x: W + 20, y: Math.random() * H };
+                } else {
+                    start = { x: Math.random() * W, y: H + 20 };
+                }
+                var colors = [
+                    'rgba(56,189,248,',   // sky
+                    'rgba(167,139,250,',  // violet
+                    'rgba(52,211,153,',   // emerald
+                    'rgba(34,211,238,'    // cyan
+                ];
+                return {
+                    x: start.x,
+                    y: start.y,
+                    vx: (start.x < W / 2 ? 1 : -1) * (0.2 + Math.random() * 0.4),
+                    vy: (start.y < H ? -1 : 0) * (0.05 + Math.random() * 0.15) * (Math.random() < 0.5 ? 1 : -1),
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    w: 0.6 + Math.random() * 1.2,
+                    trail: []
+                };
+            }
+
+            var lines = [];
+            var LINE_COUNT = Math.min(60, Math.max(24, Math.floor(W * H / 22000)));
+            for (var i = 0; i < LINE_COUNT; i++) lines.push(makeLine());
+
+            var t = 0;
+            function step() {
+                t += 0.008;
+                ctx.clearRect(0, 0, W, H);
+
+                // 背景淡网格
+                ctx.strokeStyle = 'rgba(56,189,248,0.025)';
+                ctx.lineWidth = 1;
+                var gs = 60;
+                for (var gx = 0; gx < W; gx += gs) {
+                    ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, H); ctx.stroke();
+                }
+                for (var gy = 0; gy < H; gy += gs) {
+                    ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke();
+                }
+
+                // 流动线
+                for (var i = 0; i < lines.length; i++) {
+                    var L = lines[i];
+                    L.x += L.vx;
+                    L.y += L.vy + Math.sin(t + i * 0.7) * 0.25;
+
+                    L.trail.push({ x: L.x, y: L.y });
+                    if (L.trail.length > 42) L.trail.shift();
+
+                    for (var j = 1; j < L.trail.length; j++) {
+                        var a = (j / L.trail.length) * 0.55;
+                        var p0 = L.trail[j - 1], p1 = L.trail[j];
+                        ctx.beginPath();
+                        ctx.moveTo(p0.x, p0.y);
+                        ctx.lineTo(p1.x, p1.y);
+                        ctx.strokeStyle = L.color + a + ')';
+                        ctx.lineWidth = L.w * (j / L.trail.length);
+                        ctx.stroke();
+                    }
+
+                    var grad = ctx.createRadialGradient(L.x, L.y, 0, L.x, L.y, 14);
+                    grad.addColorStop(0, L.color + '0.9)');
+                    grad.addColorStop(1, L.color + '0)');
+                    ctx.beginPath();
+                    ctx.fillStyle = grad;
+                    ctx.arc(L.x, L.y, 14, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    ctx.beginPath();
+                    ctx.fillStyle = L.color + '0.95)';
+                    ctx.arc(L.x, L.y, 1.6, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    if (L.x < -40 || L.x > W + 40 || L.y < -40 || L.y > H + 40) {
+                        lines[i] = makeLine();
+                    }
+                }
+
+                // 连接近线
+                ctx.lineWidth = 0.5;
+                for (var a = 0; a < lines.length; a++) {
+                    for (var b = a + 1; b < lines.length; b++) {
+                        var dx = lines[a].x - lines[b].x;
+                        var dy = lines[a].y - lines[b].y;
+                        var d2 = dx * dx + dy * dy;
+                        if (d2 < 13000) {
+                            var alpha = (1 - Math.sqrt(d2) / 114) * 0.12;
+                            ctx.beginPath();
+                            ctx.moveTo(lines[a].x, lines[a].y);
+                            ctx.lineTo(lines[b].x, lines[b].y);
+                            ctx.strokeStyle = 'rgba(56,189,248,' + alpha + ')';
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                requestAnimationFrame(step);
+            }
+            step();
+        })();
+
+        // 弹窗控制逻辑
+        const modal = document.getElementById('myModal');
+
+        function openModal() {
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.classList.add('show');
+            }, 10);
+        }
+
+        function closeModal() {
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+
+        // 点击外部关闭弹窗
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // 禁用背景滚动
+        document.addEventListener('wheel', (e) => {
+            if (modal.style.display === 'flex') {
+                e.preventDefault();
+            }
+        }, { passive: false });
+    </script>
+	<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?d69e07b9eec7a81616400c95de2448f4";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"c0d433ec60604d4f8a2c96851bb9a3ea","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>
