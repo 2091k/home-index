@@ -5,23 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>爱喝胡辣汤资源导航中心 - 2091K</title>
     <style>
+        /* ============================================================
+           主题样式表（暗色霓虹 · 深空底色 + 流动线条画布 + 三段渐变）
+           合并自原 theme.css + 微信公众号教程同款样式
+           ============================================================ */
+
+        /* ===== 主题变量 ===== */
+        :root {
+            --bg-deep: #0a0e17;        /* 深空底色 */
+            --bg-card: #111827;        /* 卡片底色 */
+            --bg-card-hover: #1a2332;  /* 卡片悬停色 */
+            --accent: #38bdf8;         /* 主色 · 青 */
+            --accent2: #a78bfa;        /* 辅色 · 紫 */
+            --accent3: #34d399;        /* 点缀 · 绿 */
+            --text: #e2e8f0;
+            --text-dim: #94a3b8;
+            --text-bright: #f8fafc;
+            --border: rgba(56, 189, 248, 0.15);
+            --glow: rgba(56, 189, 248, 0.4);
+            --grad-title: linear-gradient(120deg, var(--accent) 0%, var(--accent2) 60%, var(--accent3) 100%);
+        }
+
+        /* ===== 基础 ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            background: #0a0e17;
-            color: #e2e8f0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+                "Noto Sans CJK SC", sans-serif;
+            background: var(--bg-deep);
+            color: var(--text);
             line-height: 1.6;
             min-height: 100vh;
             position: relative;
             padding-bottom: 80px;
+            overflow-x: hidden;
         }
 
-        /* 流动线条画布 */
+        /* ===== 流动线条画布（背景层）===== */
         #flow-canvas {
             position: fixed;
             top: 0; left: 0;
@@ -30,21 +59,93 @@
             pointer-events: none;
         }
 
-        header {
+        /* 所有内容压在画布之上 */
+        .page {
             position: relative;
             z-index: 1;
+        }
+
+        /* ===== 顶部横幅 ===== */
+        header {
             text-align: center;
             padding: 2rem 0;
             background:
                 radial-gradient(ellipse 80% 90% at 50% 0%, rgba(56,189,248,0.10), transparent 65%),
                 radial-gradient(ellipse 60% 70% at 25% 10%, rgba(167,139,250,0.08), transparent 55%),
                 radial-gradient(ellipse 60% 70% at 75% 10%, rgba(52,211,153,0.08), transparent 55%);
-            border-bottom: 1px solid rgba(56,189,248,0.15);
+            border-bottom: 1px solid var(--border);
         }
 
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-bright);
+            letter-spacing: 1px;
+        }
+
+        header p {
+            color: var(--text-dim);
+        }
+
+        /* 顶部「一言」副标题：小字号 */
+        #hitokoto {
+            font-size: 0.95rem;
+            padding: 0 10px;
+        }
+
+        /* 标题里的渐变文字（如需高亮某段，用 <span class="grad">） */
+        .grad {
+            background: var(--grad-title);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* 教程同款：顶部徽章（配合 <span class="hero-badge">） */
+        .hero-badge {
+            display: inline-block;
+            padding: 6px 18px;
+            font-size: 12px;
+            letter-spacing: 3px;
+            color: var(--accent);
+            background: rgba(56,189,248,0.08);
+            border: 1px solid rgba(56,189,248,0.25);
+            border-radius: 999px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        /* 教程同款：顶部状态徽章组（.meta / .chip / .dot） */
+        .meta {
+            margin-top: 24px;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .meta .chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-dim);
+            padding: 6px 14px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: rgba(17,24,39,0.5);
+            white-space: nowrap;
+        }
+
+        .meta .dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--accent3);
+            box-shadow: 0 0 8px var(--accent3);
+        }
+
+        /* ===== 导航区 ===== */
         .container {
-            position: relative;
-            z-index: 1;
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem 20px 80px;
@@ -57,16 +158,17 @@
             place-items: center;
         }
 
+        /* ===== 卡片 ===== */
         .nav-item {
             width: 100%;
             max-width: 320px;
-            background: #111827;
+            background: var(--bg-card);
             border-radius: 1.5rem;
             padding: 1.5rem;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(56,189,248,0.15);
+            border: 1px solid var(--border);
             text-decoration: none;
             display: block;
             color: inherit;
@@ -74,42 +176,49 @@
             overflow: hidden;
         }
 
+        /* 卡片顶部渐变光线（悬停时浮现） */
         .nav-item::before {
             content: "";
             position: absolute;
             top: 0; left: 0; right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, #38bdf8, #a78bfa, transparent);
+            background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
             opacity: 0;
             transition: opacity .3s;
         }
 
         .nav-item:hover {
-            background: #1a2332;
+            background: var(--bg-card-hover);
             transform: translateY(-5px);
-            border-color: rgba(56,189,248,0.4);
-            box-shadow: 0 10px 28px rgba(56,189,248,0.12);
+            border-color: rgba(56, 189, 248, 0.4);
+            box-shadow: 0 10px 28px rgba(56, 189, 248, 0.12);
         }
 
-        .nav-item:hover::before { opacity: 1; }
+        .nav-item:hover::before {
+            opacity: 1;
+        }
 
-        h2 {
+        .nav-item h2 {
             font-size: 1.5rem;
             margin-bottom: 0.5rem;
-            background: linear-gradient(120deg, #38bdf8 0%, #a78bfa 60%, #34d399 100%);
+            background: var(--grad-title);
             -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
             color: transparent;
         }
 
-        /* 弹窗样式 */
+        .nav-item p {
+            color: var(--text-dim);
+        }
+
+        /* ===== 弹窗 ===== */
         .modal {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(10,14,23,0.78);
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(10, 14, 23, 0.78);
             backdrop-filter: blur(10px);
             z-index: 1000;
             justify-content: center;
@@ -123,11 +232,11 @@
             width: 90%;
             max-width: 400px;
             position: relative;
-            border: 1px solid rgba(56,189,248,0.15);
+            border: 1px solid var(--border);
             transform: scale(0.9);
             opacity: 0;
             transition: all 0.3s ease-out;
-            box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
         }
 
         .modal.show .modal-content {
@@ -136,7 +245,7 @@
         }
 
         .modal-content h3 {
-            color: #f8fafc;
+            color: var(--text-bright);
             letter-spacing: 1px;
             margin-bottom: 0.5rem;
         }
@@ -147,144 +256,145 @@
             top: 1rem;
             font-size: 1.5rem;
             cursor: pointer;
-            color: #94a3b8;
+            color: var(--text-dim);
             transition: color .2s;
+            line-height: 1;
         }
 
-        .close:hover { color: #38bdf8; }
+        .close:hover {
+            color: var(--accent);
+        }
 
         .site-link {
             display: block;
             padding: 1rem;
             margin: 0.5rem 0;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(56,189,248,0.15);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
             border-radius: 0.8rem;
-            color: #e2e8f0;
+            color: var(--text);
             text-decoration: none;
             transition: all 0.2s ease;
         }
 
         .site-link:hover {
-            background: rgba(56,189,248,0.08);
-            border-color: rgba(56,189,248,0.4);
+            background: rgba(56, 189, 248, 0.08);
+            border-color: rgba(56, 189, 248, 0.4);
             transform: translateX(5px);
-            color: #f8fafc;
+            color: var(--text-bright);
         }
 
+        /* ===== 页脚 ===== */
         footer {
             position: fixed;
+            bottom: 0; left: 0; right: 0;
             z-index: 99;
             text-align: center;
             padding: 2rem;
-            background: radial-gradient(ellipse 60% 120% at 50% 100%, rgba(167,139,250,0.08), rgba(10,14,23,0.85));
-            border-top: 1px solid rgba(56,189,248,0.15);
-            bottom: 0;
-            left: 0;
-            right: 0;
-        }
-
-        @media (max-width: 768px) {
-            .nav-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .nav-item {
-                padding: 1.2rem;
-            }
-            
-            h2 {
-                font-size: 1.3rem;
-            }
-        }
-    </style>
-	<style>
-    /* 新增移动端适配样式 */
-    @media (max-width: 480px) {
-        header {
-            padding: 1.5rem 0;
-        }
-        
-        header h1 {
-            font-size: 2rem !important;
-            margin-bottom: 0.3rem;
-        }
-
-        #hitokoto {
-            font-size: 2vh !important;
-            padding: 0 10px;
-        }
-
-        .container {
-            padding: 1rem 10px 70px;
-        }
-
-        .nav-item {
-            max-width: 100%;
-            padding: 1rem;
-            border-radius: 1rem;
-            margin: 0.5rem 0;
-        }
-
-        h2 {
-            font-size: 1.2rem !important;
-        }
-
-        .nav-item p {
-            font-size: 0.9rem;
-        }
-
-        footer {
-            padding: 1rem;
-            position: fixed;
-            bottom: 0;
-            background: #0a0e17e6;
+            background: radial-gradient(ellipse 60% 120% at 50% 100%,
+                rgba(167, 139, 250, 0.08), rgba(10, 14, 23, 0.85));
+            border-top: 1px solid var(--border);
         }
 
         footer p {
-            font-size: 0.8rem;
+            color: var(--text-dim);
         }
 
-        .modal-content {
-            width: 95%;
-            max-width: 340px;
-            padding: 1.5rem;
+        /* ===== 响应式 ===== */
+        @media (max-width: 768px) {
+            .nav-grid {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .nav-item {
+                padding: 1.2rem;
+                transform: scale(0.95);
+                transition: none;
+            }
+
+            .nav-item h2 {
+                font-size: 1.3rem;
+            }
+
+            body {
+                padding-bottom: 60px;
+            }
         }
 
-        .site-link {
-            padding: 0.8rem;
-            font-size: 0.9rem;
-        }
-    }
+        @media (max-width: 480px) {
+            header {
+                padding: 1.5rem 0;
+            }
 
-    /* 优化原有移动端样式 */
-    @media (max-width: 768px) {
-        .nav-grid {
-            grid-template-columns: 1fr;
-            gap: 0.5rem;
+            header h1 {
+                font-size: 2rem;
+                margin-bottom: 0.3rem;
+            }
+
+            .container {
+                padding: 1rem 10px 70px;
+            }
+
+            .nav-item {
+                max-width: 100%;
+                padding: 1rem;
+                border-radius: 1rem;
+            }
+
+            .nav-item h2 {
+                font-size: 1.2rem;
+            }
+
+            .nav-item p {
+                font-size: 0.9rem;
+            }
+
+            .meta {
+                gap: 6px;
+            }
+
+            .meta .chip {
+                font-size: 11px;
+                padding: 4px 10px;
+            }
+
+            footer {
+                padding: 1rem;
+                background: rgba(10, 14, 23, 0.9);
+            }
+
+            footer p {
+                font-size: 0.8rem;
+            }
+
+            .modal-content {
+                width: 95%;
+                max-width: 340px;
+                padding: 1.5rem;
+            }
+
+            .site-link {
+                padding: 0.8rem;
+                font-size: 0.9rem;
+            }
         }
-        
-        .nav-item {
-            transform: scale(0.95);
-            transition: none;
-        }
-        
-        .nav-item:hover {
-            transform: scale(0.95);
-        }
-        
-        body {
-            padding-bottom: 60px;
-        }
-    }
-</style>
+    </style>
 </head>
 <body>
     <canvas id="flow-canvas"></canvas>
 
+    <div class="page">
+
     <header>
-        <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">爱喝胡辣汤</h1>
-		<p style="font-size:2vh; color: #94a3b8;" id="hitokoto">思考中...</p>
+        <span class="hero-badge">Resource Hub · 2091K</span>
+        <h1>爱喝胡辣汤<span class="grad">资源导航中心</span></h1>
+        <p id="hitokoto">思考中...</p>
+        <div class="meta">
+            <span class="chip"><span class="dot"></span>高效工作</span>
+            <span class="chip"><span class="dot" style="background:var(--accent2);box-shadow:0 0 8px var(--accent2)"></span>精致生活</span>
+            <span class="chip"><span class="dot" style="background:var(--accent3);box-shadow:0 0 8px var(--accent3)"></span>资源聚合</span>
+        </div>
         <script src="https://v1.hitokoto.cn/?encode=js&select=%23hitokoto" defer></script>
     </header>
 
@@ -292,32 +402,32 @@
         <div class="nav-grid">
             <a class="nav-item" href="https://blog.2091k.cn/" target="_blank">
                 <h2>📝 博客</h2>
-                <p style="color: #94a3b8;">知识分享与技术交流</p>
+                <p>知识分享与技术交流</p>
             </a>
 
             <a class="nav-item" href="http://vqq.521156.xyz/" target="_blank">
                 <h2>🎬 我的影院</h2>
-                <p style="color: #94a3b8;">高清影视资源库</p>
+                <p>高清影视资源库</p>
             </a>
 
             <div class="nav-item" onclick="openModal()">
                 <h2>🖼️ 图床</h2>
-                <p style="color: #94a3b8;">选择图片托管服务</p>
+                <p>选择图片托管服务</p>
             </div>
 
             <a class="nav-item" href="http://cloud.2091k.cn/alist" target="_blank">
                 <h2>☁️ ALIST</h2>
-                <p style="color: #94a3b8;">多网盘聚合管理</p>
+                <p>多网盘聚合管理</p>
             </a>
 
             <a class="nav-item" href="https://aipan.2091k.cn/" target="_blank">
                 <h2>💾 爱盘</h2>
-                <p style="color: #94a3b8;">网络资源分享</p>
+                <p>网络资源分享</p>
             </a>
 
             <a class="nav-item" href="https://home.2091k.cn/dh/" target="_blank">
                 <h2>🔍 更多</h2>
-                <p style="color: #94a3b8;">发现更多资源</p>
+                <p>发现更多资源</p>
             </a>
         </div>
     </div>
@@ -333,8 +443,10 @@
     </div>
 
     <footer>
-        <p style="color: #64748b;">© 2025 爱喝胡辣汤-资源导航中心 · 高效工作 精致生活</p>
+        <p>© 2025 爱喝胡辣汤-资源导航中心 · 高效工作 精致生活</p>
     </footer>
+
+    </div>
 
     <script>
         // ===== 流动线条画布 =====
